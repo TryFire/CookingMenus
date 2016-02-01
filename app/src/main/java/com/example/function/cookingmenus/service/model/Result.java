@@ -6,7 +6,6 @@ public class Result {
 
     private String parentId;
     private String name;
-    //private String list;
     private java.util.List<List> list = new ArrayList<List>();
 
     /**
