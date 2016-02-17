@@ -41,7 +41,8 @@ public interface MenuNamesService {
 
 
     @GET("/cook/category")
-    Call<CategoryResp> getCategorys(@Query("parentid") int parentId, @Query("key") String appKey);
+    Call<CategoryResp> getCategory(@Query("parentid") int parentId, @Query("key") String appKey);
 
-
+    @GET("/cook/category")
+    Call<CategoryResp> getCategorys(@Query("key") String appKey);
 }
