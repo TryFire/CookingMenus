@@ -7,7 +7,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.function.cookingmenus.Constants;
 import com.example.function.cookingmenus.R;
+import com.example.function.cookingmenus.adapter.item.CategoryItem;
+import com.example.function.cookingmenus.service.BaseService;
+import com.example.function.cookingmenus.service.model.CategoryResp;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CategoryActivity extends BaseActivity {
 
@@ -21,6 +31,21 @@ public class CategoryActivity extends BaseActivity {
         Bundle bundle = intent.getExtras();
         String parentId = bundle.getString("parentId");
         Log.e("what", parentId);
+
+        Call<CategoryResp> respCall = BaseService.getMenuNamesService().getCategory(Integer.valueOf(parentId), Constants.APP_KEY);
+        respCall.enqueue(new Callback<CategoryResp>() {
+            @Override
+            public void onResponse(Response<CategoryResp> response) {
+                List<com.example.function.cookingmenus.service.model.List> lists = response.body().getResult().get(0).getList();
+                String name = lists.get(1).getName();
+                Log.e("name", name);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
 
     }
 
