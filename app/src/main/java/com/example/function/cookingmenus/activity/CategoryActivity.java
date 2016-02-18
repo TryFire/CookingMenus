@@ -1,7 +1,9 @@
 package com.example.function.cookingmenus.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -15,6 +17,10 @@ public class CategoryActivity extends BaseActivity {
         setContentView(R.layout.activity_category);
         setToolbarName("Category");
 
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        String parentId = bundle.getString("parentId");
+        Log.e("what", parentId);
 
     }
 

@@ -8,28 +8,30 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.function.cookingmenus.Constants;
 import com.example.function.cookingmenus.R;
 import com.example.function.cookingmenus.adapter.RecommendMenusAdapter;
+import com.example.function.cookingmenus.adapter.item.CategoryItem;
 import com.example.function.cookingmenus.service.BaseService;
 import com.example.function.cookingmenus.service.model.CategoryResp;
 import com.example.function.cookingmenus.service.model.Result;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecommendMenusAdapter.OnItemviewClickListener {
 
     private RecyclerView recyclerView;
-    List<String> names = new ArrayList<String>();
+    List<CategoryItem> names = new ArrayList<CategoryItem>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,16 +40,19 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycle_view);
         final RecommendMenusAdapter adapter = new RecommendMenusAdapter(getApplicationContext(), names);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemviewClickListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         Call<CategoryResp> categoryRespCall = BaseService.getMenuNamesService().getCategorys(Constants.APP_KEY);
         categoryRespCall.enqueue(new Callback<CategoryResp>() {
             @Override
             public void onResponse(Response<CategoryResp> response) {
+
                 List<Result> results = response.body().getResult();
 
                 for (Result result : results) {
                     String name = result.getName();
-                    names.add(name);
+                    String parentId = result.getParentId();
+                    names.add(new CategoryItem(name, parentId));
                 }
                 adapter.notifyDataSetChanged();
 
@@ -80,5 +85,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemviewClick(View v, int i) {
+        Intent intent = new Intent(getApplicationContext(), CategoryActivity.class);
+        intent.putExtra("parentId", names.get(i).getParentId());
+        Log.e("nimen", "======");
+        startActivity(intent);
     }
 }
