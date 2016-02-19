@@ -15,13 +15,11 @@ import com.example.function.cookingmenus.R;
 import com.example.function.cookingmenus.adapter.RecommendMenusAdapter;
 import com.example.function.cookingmenus.adapter.item.CategoryItem;
 import com.example.function.cookingmenus.service.BaseService;
-import com.example.function.cookingmenus.service.model.CategoryResp;
-import com.example.function.cookingmenus.service.model.Result;
+import com.example.function.cookingmenus.service.model.Category.CategoryResp;
+import com.example.function.cookingmenus.service.model.Category.Result;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -2,6 +2,7 @@ package com.example.function.cookingmenus.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +46,11 @@ public class CategoryDetailAdapter extends RecyclerView.Adapter implements View.
 
     @Override
     public void onClick(View v) {
+//        Log.e("detail adapter", "+++++++++++++");
         if (v.getId() == R.id.view_content) {
+//            Log.e("detail adapter", "+++++++++++++----------");
             if(listener != null) {
+//                Log.e("detail adapter", "-----------");
                 listener.onDetailItemClick(v, (Integer) v.getTag());
             }
         }

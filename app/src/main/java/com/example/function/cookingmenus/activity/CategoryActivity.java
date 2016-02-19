@@ -1,7 +1,6 @@
 package com.example.function.cookingmenus.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,9 +13,9 @@ import com.example.function.cookingmenus.Constants;
 import com.example.function.cookingmenus.R;
 import com.example.function.cookingmenus.adapter.CategoryDetailAdapter;
 import com.example.function.cookingmenus.adapter.item.CategoryDetailItem;
-import com.example.function.cookingmenus.adapter.item.CategoryItem;
 import com.example.function.cookingmenus.service.BaseService;
-import com.example.function.cookingmenus.service.model.CategoryResp;
+import com.example.function.cookingmenus.service.model.categorydetail.CateDetailResp;
+import com.example.function.cookingmenus.service.model.Category.CategoryResp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +47,8 @@ public class CategoryActivity extends BaseActivity implements CategoryDetailAdap
         respCall.enqueue(new Callback<CategoryResp>() {
             @Override
             public void onResponse(Response<CategoryResp> response) {
-                List<com.example.function.cookingmenus.service.model.List> lists = response.body().getResult().get(0).getList();
-                for (com.example.function.cookingmenus.service.model.List list : lists) {
+                List<com.example.function.cookingmenus.service.model.Category.List> lists = response.body().getResult().get(0).getList();
+                for (com.example.function.cookingmenus.service.model.Category.List list : lists) {
                     ids.add(new CategoryDetailItem(list.getName(), list.getId()));
                 }
                 adapter.notifyDataSetChanged();
@@ -87,6 +86,20 @@ public class CategoryActivity extends BaseActivity implements CategoryDetailAdap
 
     @Override
     public void onDetailItemClick(View v, int position) {
+//        Log.e("detail adapter", "aaaaaaaaaaa");
+        int cid = Integer.valueOf(ids.get(position).getId());
+        Call<CateDetailResp> detailRespCallCall = BaseService.getMenuNamesService().getDatas(cid, "1", Constants.APP_KEY);
+        detailRespCallCall.enqueue(new Callback<CateDetailResp>() {
+            @Override
+            public void onResponse(Response<CateDetailResp> response) {
+                String title = response.body().getResult().getData().get(0).getTitle();
+                Log.e("title", title);
+            }
 
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e("fail", "fail");
+            }
+        });
     }
 }

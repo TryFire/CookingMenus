@@ -1,6 +1,7 @@
 package com.example.function.cookingmenus.service;
 
-import com.example.function.cookingmenus.service.model.CategoryResp;
+import com.example.function.cookingmenus.service.model.categorydetail.CateDetailResp;
+import com.example.function.cookingmenus.service.model.Category.CategoryResp;
 import com.example.function.cookingmenus.service.model.MenuResp;
 
 import java.util.Map;
@@ -36,9 +37,13 @@ public interface MenuNamesService {
                                        @Field("dtype")String dType,
                                        @Field("key")String appKey);
 
-    @GET("https://apis.juhe.cn/cook/category?parentid=10001&key=e18cab739f0f6bd11cbc44cd263d5efc")
-    Call<CategoryResp> getCategory();
 
+
+    @GET("/cook/index")
+    Call<CateDetailResp> getDatas(@Query("cid") int cid, @Query("format") String format, @Query("key") String appKey);
+
+    @GET("/cook/index")
+    Call<CateDetailResp> getDatas(@Query("cid") int cid, @Query("rn") String rn, @Query("format") String format, @Query("key") String appKey);
 
     @GET("/cook/category")
     Call<CategoryResp> getCategory(@Query("parentid") int parentId, @Query("key") String appKey);

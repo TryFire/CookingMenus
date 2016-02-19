@@ -1,4 +1,4 @@
-package com.example.function.cookingmenus.service.model;
+package com.example.function.cookingmenus.service.model.Category;
 
 
 
