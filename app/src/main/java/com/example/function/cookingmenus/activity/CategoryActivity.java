@@ -3,30 +3,42 @@ package com.example.function.cookingmenus.activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.function.cookingmenus.Constants;
 import com.example.function.cookingmenus.R;
+import com.example.function.cookingmenus.adapter.CategoryDetailAdapter;
+import com.example.function.cookingmenus.adapter.item.CategoryDetailItem;
 import com.example.function.cookingmenus.adapter.item.CategoryItem;
 import com.example.function.cookingmenus.service.BaseService;
 import com.example.function.cookingmenus.service.model.CategoryResp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CategoryActivity extends BaseActivity {
+public class CategoryActivity extends BaseActivity implements CategoryDetailAdapter.OnDetailItemClickListener {
 
+    private RecyclerView recyclerView;
+    private List<CategoryDetailItem> ids = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
         setToolbarName("Category");
-
+        recyclerView = (RecyclerView) findViewById(R.id.category_detail);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        final CategoryDetailAdapter adapter = new CategoryDetailAdapter(getApplicationContext(), ids);
+        adapter.setOnDetailItemClickListener(this);
+        recyclerView.setAdapter(adapter);
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         String parentId = bundle.getString("parentId");
@@ -37,8 +49,10 @@ public class CategoryActivity extends BaseActivity {
             @Override
             public void onResponse(Response<CategoryResp> response) {
                 List<com.example.function.cookingmenus.service.model.List> lists = response.body().getResult().get(0).getList();
-                String name = lists.get(1).getName();
-                Log.e("name", name);
+                for (com.example.function.cookingmenus.service.model.List list : lists) {
+                    ids.add(new CategoryDetailItem(list.getName(), list.getId()));
+                }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -69,5 +83,10 @@ public class CategoryActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDetailItemClick(View v, int position) {
+
     }
 }
