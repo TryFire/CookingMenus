@@ -88,18 +88,8 @@ public class CategoryActivity extends BaseActivity implements CategoryDetailAdap
     public void onDetailItemClick(View v, int position) {
 //        Log.e("detail adapter", "aaaaaaaaaaa");
         int cid = Integer.valueOf(ids.get(position).getId());
-        Call<CateDetailResp> detailRespCallCall = BaseService.getMenuNamesService().getDatas(cid, "1", Constants.APP_KEY);
-        detailRespCallCall.enqueue(new Callback<CateDetailResp>() {
-            @Override
-            public void onResponse(Response<CateDetailResp> response) {
-                String title = response.body().getResult().getData().get(0).getTitle();
-                Log.e("title", title);
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                Log.e("fail", "fail");
-            }
-        });
+        Intent intent = new Intent(getApplicationContext(), MenuSimpleActivity.class);
+        intent.putExtra("cid", cid);
+        startActivity(intent);
     }
 }

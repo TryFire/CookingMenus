@@ -9,6 +9,15 @@ public class MenuSimpleItem {
     private String album;
     private String imtro;
 
+    public MenuSimpleItem() {
+    }
+
+    public MenuSimpleItem(String title, String imtro, String album) {
+        this.title = title;
+        this.album = album;
+        this.imtro = imtro;
+    }
+
     public String getId() {
         return id;
     }
